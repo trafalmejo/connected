@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1">
+    <title>Pikaday - Date Range example</title>
+    <meta name="author" content="David Bushell">
+    <link rel="stylesheet" href="./css/pikaday.css">
+    <link rel="stylesheet" href="./css/site.css">
+</head>
+<body>
+    <h1>Welcome to the OPT Calculator</h1>
+
+    <p class="large">If you have already done OPT at your current academic level, use this date calculator to find out how much time you have remaining for your OPT to calculate your end date.</p>
+    <form method = 'POST' action = '/process' >
+    <input type="text" name="username" value=" " placeholder="Tell us your name" />
+
+    <h2>First OPT</h2>
+
+
+    <div style="display: inline-block">
+        <label for="start">Start:</label>
+        <br>
+        <input type="text" id="start1" name = "start1">
+    </div>
+
+    <div style="display: inline-block">
+        <label for="end">End:</label>
+        <br>
+        <input type="text" id="end1" name = "end1">
+    </div>
+      <h2>Second OPT</h2>
+
+
+    <div style="display: inline-block">
+        <label for="start1">Start:</label>
+        <br>
+        <input type="text" id="start2" name = "start2">
+    </div>
+
+    <div style="display: inline-block">
+        <label for="end1">End:</label>
+        <br>
+        <input type="text" id="end2" name = "end2">
+    </div>
+      <h2>Third OPT</h2>
+
+
+    <div style="display: inline-block">
+        <label for="start2">Start:</label>
+        <br>
+        <input type="text" id="start3" name = "start3">
+    </div>
+
+    <div style="display: inline-block">
+        <label for="end2">End:</label>
+        <br>
+        <input type="text" id="end3" name = "end3">
+    </div>
+    <br>
+
+        <div style="display: inline-block">
+        <input type="submit" name="submitbutton" value="CALCULATE" />
+    </div>
+
+    </form>
+
+    <script src="./pikaday.js"></script>
+    <script>
+    var startDate1,
+        endDate1,
+        updateStartDate1 = function() {
+            startPicker1.setStartRange(startDate1);
+            endPicker1.setStartRange(startDate1);
+            endPicker1.setMinDate(startDate1);
+        },
+        updateEndDate1 = function() {
+            startPicker1.setEndRange(endDate1);
+            startPicker1.setMaxDate(endDate1);
+            endPicker1.setEndRange(endDate1);
+        },
+        startPicker1 = new Pikaday({
+            field: document.getElementById('start1'),
+            minDate: new Date(),
+            maxDate: new Date(2020, 12, 31),
+            onSelect: function() {
+                startDate1 = this.getDate();
+                updateStartDate1();
+            }
+        }),
+        endPicker1 = new Pikaday({
+            field: document.getElementById('end1'),
+            minDate: new Date(),
+            maxDate: new Date(2020, 12, 31),
+            onSelect: function() {
+                endDate1 = this.getDate();
+                updateEndDate1();
+            }
+        }),
+        _startDate1 = startPicker1.getDate(),
+        _endDate1 = endPicker1.getDate();
+        if (_startDate1) {
+            startDate1 = _startDate1;
+            updateStartDate1();
+        }
+        if (_endDate1) {
+            endDate1 = _endDate1;
+            updateEndDate1();
+        }
+        //
+            var startDate2,
+        endDate2,
+        updateStartDate2 = function() {
+            startPicker2.setStartRange(startDate2);
+            endPicker2.setStartRange(startDate2);
+            endPicker2.setMinDate(startDate2);
+        },
+        updateEndDate2 = function() {
+            startPicker2.setEndRange(endDate2);
+            startPicker2.setMaxDate(endDate2);
+            endPicker2.setEndRange(endDate2);
+        },
+        startPicker2 = new Pikaday({
+            field: document.getElementById('start2'),
+            minDate: new Date(),
+            maxDate: new Date(2020, 12, 31),
+            onSelect: function() {
+                startDate2 = this.getDate();
+                updateStartDate2();
+            }
+        }),
+        endPicker2 = new Pikaday({
+            field: document.getElementById('end2'),
+            minDate: new Date(),
+            maxDate: new Date(2020, 12, 31),
+            onSelect: function() {
+                endDate2 = this.getDate();
+                updateEndDate2();
+            }
+        }),
+        _startDate2 = startPicker2.getDate(),
+        _endDate2 = endPicker2.getDate();
+        if (_startDate2) {
+            startDate2 = _startDate2;
+            updateStartDate2();
+        }
+        if (_endDate2) {
+            endDate2 = _endDate2;
+            updateEndDate2();
+        }
+        ////
+            var startDate3,
+        endDate3,
+        updateStartDate3 = function() {
+            startPicker3.setStartRange(startDate3);
+            endPicker3.setStartRange(startDate3);
+            endPicker3.setMinDate(startDate3);
+        },
+        updateEndDate3 = function() {
+            startPicker3.setEndRange(endDate3);
+            startPicker3.setMaxDate(endDate3);
+            endPicker3.setEndRange(endDate3);
+        },
+        startPicker3 = new Pikaday({
+            field: document.getElementById('start3'),
+            minDate: new Date(),
+            maxDate: new Date(2020, 12, 31),
+            onSelect: function() {
+                startDate3 = this.getDate();
+                updateStartDate3();
+            }
+        }),
+        endPicker3 = new Pikaday({
+            field: document.getElementById('end3'),
+            minDate: new Date(),
+            maxDate: new Date(2020, 12, 31),
+            onSelect: function() {
+                endDate3 = this.getDate();
+                updateEndDate3();
+            }
+        }),
+        _startDate3 = startPicker3.getDate(),
+        _endDate3 = endPicker3.getDate();
+        if (_startDate3) {
+            startDate3 = _startDate3;
+            updateStartDate3();
+        }
+        if (_endDate3) {
+            endDate3 = _endDate3;
+            updateEndDate33();
+        }
+    </script>
+</body>
+</html>
