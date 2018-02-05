@@ -12,8 +12,8 @@
        <script>
 $(document).ready(function() {
     var id = 1;
-    var max_fields      = 5;
-    var wrapper         = $(".container1");
+    var max_fields      = 3;
+    var wrapper         = $(".addRanges");
     var add_button      = $(".add_form_field");
   
     var x = 1;
@@ -23,8 +23,7 @@ $(document).ready(function() {
             x++;
             id++;
             //$(wrapper).append('<div><input type="text" name="mytext[]"/><a href="#" class="delete">Delete</a></div>'); //add input box
-            $(wrapper).append('<br><div style="display: inline-block"><label for="start">Start:</label><br><input type="text" id="start'+id+'" name = "start'+id+'"><div style="display: inline-block"><label for="end">End:</label><br><input type="text" id="end'+id+'" name = "end'+id+'"></div> <input type="checkbox" name="partime'+id+'" value="partime'+id+'"> Was it a part-time?<a href="#" class="delete">Delete</a></div>'); //add input box
-
+            $(wrapper).append('<br><div style="display: inline-block"><label for="start">Start:</label><br><input type="text" id="start'+id+'" name = "start'+id+'"></div><div style="display: inline-block"><label for="end">End:</label><br><input type="text" id="end'+id+'" name = "end'+id+'"></div> <input type="checkbox" name="partime'+id+'" value="partime'+id+'"> Was it a part-time?<a href="#" class="delete">Delete</a>'); //add input box
         }
   else
   {
@@ -103,10 +102,11 @@ $(document).ready(function() {
         <br>
         <input type="text" id="end1" name = "end1">
     </div>
-      <input type="checkbox" name="partime1" value="partime1"> Was it a part-time?<br>
+      <input type="checkbox" name="partime1" value="partime1"> Was it a part-time?
 
-<div class="container1">
+<div class="addRanges" style="display: inline">
 </div>
+<br>
 <button class="add_form_field">Add New OPT &nbsp; <span style="font-size:16px; font-weight:bold;">+ </span></button>
 
         <div style="display: inline-block">
