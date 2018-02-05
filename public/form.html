@@ -7,15 +7,89 @@
     <meta name="author" content="David Bushell">
     <link rel="stylesheet" href="./css/pikaday.css">
     <link rel="stylesheet" href="./css/site.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+
+       <script>
+$(document).ready(function() {
+    var id = 1;
+    var max_fields      = 5;
+    var wrapper         = $(".container1");
+    var add_button      = $(".add_form_field");
+  
+    var x = 1;
+    $(add_button).click(function(e){
+        e.preventDefault();
+        if(x < max_fields){
+            x++;
+            id++;
+            //$(wrapper).append('<div><input type="text" name="mytext[]"/><a href="#" class="delete">Delete</a></div>'); //add input box
+            $(wrapper).append('<br><div style="display: inline-block"><label for="start">Start:</label><br><input type="text" id="start'+id+'" name = "start'+id+'"><div style="display: inline-block"><label for="end">End:</label><br><input type="text" id="end'+id+'" name = "end'+id+'"></div> <input type="checkbox" name="partime'+id+'" value="partime'+id+'"> Was it a part-time?<a href="#" class="delete">Delete</a></div>'); //add input box
+
+        }
+  else
+  {
+  alert('You Reached the limit')
+  }
+          //
+            var startDate,
+        endDate,
+        updateStartDate = function() {
+            startPicker.setStartRange(startDate);
+            endPicker.setStartRange(startDate);
+            endPicker.setMinDate(startDate);
+        },
+        updateEndDate = function() {
+            startPicker.setEndRange(endDate);
+            startPicker.setMaxDate(endDate);
+            endPicker.setEndRange(endDate);
+        },
+        startPicker = new Pikaday({
+            field: document.getElementById('start'+id+''),
+            minDate: new Date(),
+            maxDate: new Date(2020, 12, 31),
+            onSelect: function() {
+                startDate = this.getDate();
+                updateStartDate();
+            }
+        }),
+        endPicker = new Pikaday({
+            field: document.getElementById('end'+id+''),
+            minDate: new Date(),
+            maxDate: new Date(2020, 12, 31),
+            onSelect: function() {
+                endDate = this.getDate();
+                updateEndDate();
+            }
+        }),
+        _startDate= startPicker.getDate(),
+        _endDate = endPicker.getDate();
+
+        if (_startDate) {
+            startDate = _startDate;
+            updateStartDate();
+        }
+        if (_endDate) {
+            endDate = _endDate;
+            updateEndDate();
+        }});
+  
+    $(wrapper).on("click",".delete", function(e){
+        e.preventDefault(); $(this).parent('div').remove(); x--; id--;
+    })
+
+});
+</script>
+
 </head>
 <body>
     <h1>Welcome to the OPT Calculator</h1>
 
     <p class="large">If you have already done OPT at your current academic level, use this date calculator to find out how much time you have remaining for your OPT to calculate your end date.</p>
-    <form method = 'POST' action = '/process' >
-    <input type="text" name="username" value=" " placeholder="Tell us your name" />
 
-    <h2>First OPT</h2>
+    <form method = 'POST' action = '/process' >
+
+    <h2>Past OPT(s)</h2>
+
 
 
     <div style="display: inline-block">
@@ -29,38 +103,15 @@
         <br>
         <input type="text" id="end1" name = "end1">
     </div>
-      <h2>Second OPT</h2>
+      <input type="checkbox" name="partime1" value="partime1"> Was it a part-time?<br>
 
-
-    <div style="display: inline-block">
-        <label for="start1">Start:</label>
-        <br>
-        <input type="text" id="start2" name = "start2">
-    </div>
-
-    <div style="display: inline-block">
-        <label for="end1">End:</label>
-        <br>
-        <input type="text" id="end2" name = "end2">
-    </div>
-      <h2>Third OPT</h2>
-
-
-    <div style="display: inline-block">
-        <label for="start2">Start:</label>
-        <br>
-        <input type="text" id="start3" name = "start3">
-    </div>
-
-    <div style="display: inline-block">
-        <label for="end2">End:</label>
-        <br>
-        <input type="text" id="end3" name = "end3">
-    </div>
-    <br>
+<div class="container1">
+</div>
+<button class="add_form_field">Add New OPT &nbsp; <span style="font-size:16px; font-weight:bold;">+ </span></button>
 
         <div style="display: inline-block">
         <input type="submit" name="submitbutton" value="CALCULATE" />
+        <button type="button" id="calculate">Calculate Submission Range</button>
     </div>
 
     </form>
@@ -106,88 +157,6 @@
         if (_endDate1) {
             endDate1 = _endDate1;
             updateEndDate1();
-        }
-        //
-            var startDate2,
-        endDate2,
-        updateStartDate2 = function() {
-            startPicker2.setStartRange(startDate2);
-            endPicker2.setStartRange(startDate2);
-            endPicker2.setMinDate(startDate2);
-        },
-        updateEndDate2 = function() {
-            startPicker2.setEndRange(endDate2);
-            startPicker2.setMaxDate(endDate2);
-            endPicker2.setEndRange(endDate2);
-        },
-        startPicker2 = new Pikaday({
-            field: document.getElementById('start2'),
-            minDate: new Date(),
-            maxDate: new Date(2020, 12, 31),
-            onSelect: function() {
-                startDate2 = this.getDate();
-                updateStartDate2();
-            }
-        }),
-        endPicker2 = new Pikaday({
-            field: document.getElementById('end2'),
-            minDate: new Date(),
-            maxDate: new Date(2020, 12, 31),
-            onSelect: function() {
-                endDate2 = this.getDate();
-                updateEndDate2();
-            }
-        }),
-        _startDate2 = startPicker2.getDate(),
-        _endDate2 = endPicker2.getDate();
-        if (_startDate2) {
-            startDate2 = _startDate2;
-            updateStartDate2();
-        }
-        if (_endDate2) {
-            endDate2 = _endDate2;
-            updateEndDate2();
-        }
-        ////
-            var startDate3,
-        endDate3,
-        updateStartDate3 = function() {
-            startPicker3.setStartRange(startDate3);
-            endPicker3.setStartRange(startDate3);
-            endPicker3.setMinDate(startDate3);
-        },
-        updateEndDate3 = function() {
-            startPicker3.setEndRange(endDate3);
-            startPicker3.setMaxDate(endDate3);
-            endPicker3.setEndRange(endDate3);
-        },
-        startPicker3 = new Pikaday({
-            field: document.getElementById('start3'),
-            minDate: new Date(),
-            maxDate: new Date(2020, 12, 31),
-            onSelect: function() {
-                startDate3 = this.getDate();
-                updateStartDate3();
-            }
-        }),
-        endPicker3 = new Pikaday({
-            field: document.getElementById('end3'),
-            minDate: new Date(),
-            maxDate: new Date(2020, 12, 31),
-            onSelect: function() {
-                endDate3 = this.getDate();
-                updateEndDate3();
-            }
-        }),
-        _startDate3 = startPicker3.getDate(),
-        _endDate3 = endPicker3.getDate();
-        if (_startDate3) {
-            startDate3 = _startDate3;
-            updateStartDate3();
-        }
-        if (_endDate3) {
-            endDate3 = _endDate3;
-            updateEndDate33();
         }
     </script>
 </body>
