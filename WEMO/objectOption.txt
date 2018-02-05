@@ -1,0 +1,7 @@
+{
+  port: 1234,
+  discover_opts: {
+    unicastBindPort: 1235
+  },
+  listen_interface: 'wlan0'
+}

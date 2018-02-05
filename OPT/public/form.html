@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1">
+    <title>Pikaday - Date Range example</title>
+    <meta name="author" content="David Bushell">
+    <link rel="stylesheet" href="./css/pikaday.css">
+    <link rel="stylesheet" href="./css/site.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.6.2/css/bulma.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+
+       <script>
+$(document).ready(function() {
+    var id = 1;
+    var max_fields      = 3;
+    var wrapper         = $(".addRanges");
+    var add_button      = $("#buttonAddRanges");
+  
+    var x = 1;
+    $(add_button).click(function(e){
+        e.preventDefault();
+        if(x < max_fields){
+            x++;
+            id++;
+            //$(wrapper).append('<div><input type="text" name="mytext[]"/><a href="#" class="delete">Delete</a></div>'); //add input box
+            $(wrapper).append('<div><br><div style="display: inline-block"><label for="start">Start:</label><br><input class="input is-rounded is-small" type="text" id="start'+id+'" name = "start'+id+'"></div>&nbsp;<div style="display: inline-block"><label for="end">End:</label><br><input class="input is-rounded is-small" type="text" id="end'+id+'" name = "end'+id+'"></div> <input type="checkbox" name="partime'+id+'" value="partime'+id+'"> Was it a part-time?<a href="#" class="delete is-large" style="vertical-align:middle;">Delete</a></div>'); //add input box
+        }
+  else
+  {
+  alert('You Reached the limit')
+  }
+          //
+            var startDate,
+        endDate,
+        updateStartDate = function() {
+            startPicker.setStartRange(startDate);
+            endPicker.setStartRange(startDate);
+            endPicker.setMinDate(startDate);
+        },
+        updateEndDate = function() {
+            startPicker.setEndRange(endDate);
+            startPicker.setMaxDate(endDate);
+            endPicker.setEndRange(endDate);
+        },
+        startPicker = new Pikaday({
+            field: document.getElementById('start'+id+''),
+            minDate: new Date(),
+            maxDate: new Date(2020, 12, 31),
+            onSelect: function() {
+                startDate = this.getDate();
+                updateStartDate();
+            }
+        }),
+        endPicker = new Pikaday({
+            field: document.getElementById('end'+id+''),
+            minDate: new Date(),
+            maxDate: new Date(2020, 12, 31),
+            onSelect: function() {
+                endDate = this.getDate();
+                updateEndDate();
+            }
+        }),
+        _startDate= startPicker.getDate(),
+        _endDate = endPicker.getDate();
+
+        if (_startDate) {
+            startDate = _startDate;
+            updateStartDate();
+        }
+        if (_endDate) {
+            endDate = _endDate;
+            updateEndDate();
+        }});
+  
+    $(wrapper).on("click",".delete", function(e){
+        e.preventDefault(); $(this).parent('div').remove(); x--; id--;
+    })
+
+});
+</script>
+
+</head>
+<body>
+        <section class="hero is-info is-large is-bold">
+  <div class="hero-body">
+    <div class="container">
+    <h1 class="title">Welcome to the OPT Calculator</h1>
+
+    <p class="large">If you have already done OPT at your current academic level, use this date calculator to find out how much time you have remaining for your OPT to calculate your end date.</p>
+
+    <form method = 'POST' action = '/process' >
+
+    <h2>Past OPT(s)</h2>
+
+    <div style="display: inline-block">
+        <label for="start">Start:</label>
+        <br>
+        <input class="input is-rounded is-small" type="text" id="start1" name = "start1">
+    </div>
+    <div style="display: inline-block">
+        <label for="end">End:</label>
+        <br>
+        <input class="input is-rounded is-small" type="text" id="end1" name = "end1">
+    </div>
+      <input type="checkbox" name="partime1" value="partime1"> Was it a part-time?
+<div class="addRanges" style="display: inline">
+</div>
+<br>
+<button class="button" id="buttonAddRanges">Add New OPT &nbsp; <span style="font-size:16px; font-weight:bold;">+ </span></button>
+
+        <div style="display: inline-block">
+        <input class = "button is-success" id="calculate" type="submit" name="submitbutton" value="CALCULATE" />
+<!--         <button type="button" id="calculate">Calculate Submission Range</button>
+ -->    </div>
+
+    </form>
+
+    <script src="./pikaday.js"></script>
+    <script>
+    var startDate1,
+        endDate1,
+        updateStartDate1 = function() {
+            startPicker1.setStartRange(startDate1);
+            endPicker1.setStartRange(startDate1);
+            endPicker1.setMinDate(startDate1);
+        },
+        updateEndDate1 = function() {
+            startPicker1.setEndRange(endDate1);
+            startPicker1.setMaxDate(endDate1);
+            endPicker1.setEndRange(endDate1);
+        },
+        startPicker1 = new Pikaday({
+            field: document.getElementById('start1'),
+            minDate: new Date(),
+            maxDate: new Date(2020, 12, 31),
+            onSelect: function() {
+                startDate1 = this.getDate();
+                updateStartDate1();
+            }
+        }),
+        endPicker1 = new Pikaday({
+            field: document.getElementById('end1'),
+            minDate: new Date(),
+            maxDate: new Date(2020, 12, 31),
+            onSelect: function() {
+                endDate1 = this.getDate();
+                updateEndDate1();
+            }
+        }),
+        _startDate1 = startPicker1.getDate(),
+        _endDate1 = endPicker1.getDate();
+        if (_startDate1) {
+            startDate1 = _startDate1;
+            updateStartDate1();
+        }
+        if (_endDate1) {
+            endDate1 = _endDate1;
+            updateEndDate1();
+        }
+    </script>
+        </div>
+  </div>
+</section>
+</body>
+</html>
