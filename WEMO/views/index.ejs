@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Hello BELKIN!</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.6.2/css/bulma.min.css">
+    <script defer src="https://use.fontawesome.com/releases/v5.0.0/js/all.js"></script>
+</head>
+<body>
+	<section class="hero is-info is-large">
+  <div class="hero-body">
+    <div class="container">
+        <h1 class="title">PRESS THIS</h1>
+<form action="/toggle" method = "GET">
+  <input type="submit" value="TOGGLE"  class="button is-primary is-large">
+</form>       
+        <% if (data) {  %> 
+        <br>
+	<h1 class="title"><%= data.value %></h2>
+        <% } %>
+
+   </div>
+  </div>
+</section>
+</body>
+</html>

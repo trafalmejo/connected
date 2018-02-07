@@ -1,98 +1,85 @@
 
-
-
-// var Wemo = require('wemo-client');
-// var wemo = new Wemo();
-
-// wemo.discover(function(err, deviceInfo) {
-//   console.log('Wemo Device Found: %j', deviceInfo);
- 
-//   // Get the client for the found device
-//   var client = wemo.client(deviceInfo);
- 
-//   // You definitely want to listen to error events (e.g. device went offline),
-//   // Node will throw them as an exception if they are left unhandled  
-//   client.on('error', function(err) {
-//     console.log('Error: %s', err.code);
-//   });
- 
-//   // Handle BinaryState events
-//   client.on('binaryState', function(value) {
-//     console.log('Binary State changed to: %s', value);
-//   });
- 
-//   // Turn the switch on
-//   client.setBinaryState(1);
-// });
-
-
-// // Repeat discovery as some devices may appear late
-// setInterval(function() {
-//   console.log("Happening every 15 seconds");
-//   wemo.discover();
-// }, 15000);
-
-
-var SetupURL = "http://device_ip:device_port/setup.xml";
-var ip = "128.122.6.159";
-var port = 49153;
-var route = "/upnp/control/basicevent1";  // API route
-var soap;                        // string for the SOAP request
-var wemoState = 1;              // whether the WeMo is on or off
-var soap = "<?xml version=\"1.0\" encoding=\"utf-8\"?>";
-  soap += "<s:Envelope xmlns:s=\"http://schemas.xmlsoap.org/soap/envelope/\"";
-  soap += "s:encodingStyle=\"http://schemas.xmlsoap.org/soap/encoding/\">";
-  soap += "<s:Body>";
-  soap += "<u:SetBinaryState xmlns:u=\"urn:Belkin:service:basicevent:1\">";
-  soap += "<BinaryState>1</BinaryState></u:SetBinaryState>";
-  soap += "</s:Body></s:Envelope>";
-
 var Wemo = require('wemo-client');
 var wemo = new Wemo();
 var client;
 var deviceWe;
-var stateActual = 'off';
+var stateActual = 'OFF';
 var binaryState;
+var connected;
 
+//EXPRESS SERVER
+var express = require('express')
+var app = express()
 
-function cb(err, device) {
+app.use(express.static('public'))
+
+//EJS LIBRARY
+app.set('view engine', 'ejs');
+
+// MAIN ROUTE TO INDEX
+app.get('/', function (req, res) {
+  var data = {data: {value: stateActual}};
+  res.render('index.ejs', data);
+})
+
+//SERVER LISTENING ON PORT 3000
+app.listen(3000, function () {
+  console.log('Example app listening on port 3000!')
+})
+
+//Toggle route redirect to the same INDEX
+app.get('/toggle', function(req, res) {
+  //res.send("<html><html>");
+  toggle();
+  res.redirect('/');
+//res.send("Pressed");
+
+});
+
+//TOGGLE CHECK IF THE BULB IS ON OR OF AND TURN IT ON OR OFF ACCORDINLY
+function toggle(){
+  if(connected){
+   if(stateActual == "ON"){
+    client.setBinaryState(0);
+  }else{
+    client.setBinaryState(1);
+  }
+}
+}
+//CALLBACK FUNCTION TO KNOW WHAT IS OUR DEVICE
+//ONCE IT IS CONNECTED. IT IS NOT GONNA HAPPEN AGAIN
+function connectMe(err, device) {
 
   if (device.deviceType === Wemo.DEVICE_TYPE.Switch) {
     deviceWe = device;
+    connected = true;
     console.log('Wemo Switch found: %s', device.friendlyName);
-
-   client = this.client(device);
-   client.getBinaryState(state);
-  console.log('Switch %s is %s', deviceWe.deviceType, binaryState);
-  if(binaryState == 1){
-      stateActual = "on"; 
-   }else{
-      stateActual = "off"; 
+    client = this.client(device);
+    console.log('Switch %s:', deviceWe.deviceType);
   }
+  else {
+    connected = false;
+    console.log("Nothing connected");
   }
 }
 
- // client.on('binaryState', function(value) {
- //    console.log('Binary State changed to: %s', value);
- //  });
-
-
-     // Toggle the switch every two seconds
-    setInterval(function() {
+//CATCH ERR AND VALUE OF getBinaryState()
+function state(err, value){
+ binaryState = value;
  if(binaryState == 1){
-client.setBinaryState(0);
- }else{
-client.setBinaryState(1);
-  }
-        client.setBinaryState(stateActual === 'on' ? 0 : 1);
-        console.log(stateActual);
+  stateActual = "ON"; 
+}else{
+  stateActual = "OFF"; 
+}
+// AM I RECEIVING ANYTHING?
+// console.log("Error %s", err);
+// console.log("Value %s", value);
+}
 
-    }, 500);
+//TRY TO CONNECT ME TO THIS SERVER
+wemo.load("http://128.122.6.170:49153/setup.xml", connectMe);
 
-    wemo.load("http://128.122.6.170:49153/setup.xml", cb);
-
-
-    function state(err, value){
-     binaryState = value;
-      console.log("error %s", err);
-    }
+//YOU SHOULD CHECK THE STATUS OF THE BULB EVERY N SECONDS BECAUSE UDP IS NOT RELIALABLE
+setInterval(function() { if(connected){
+  client.getBinaryState(state);
+}}, 500);
