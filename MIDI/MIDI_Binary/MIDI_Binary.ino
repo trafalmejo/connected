@@ -12,7 +12,7 @@
   by Tom Igoe
 */
 
-int keys[] = {5, 6, 9, 10};   // four pins for pushbuttons (keys)
+int keys[] = {2, 3, 4, 5};   // four pins for pushbuttons (keys)
 int lastKeyState[] = {0, 0, 0, 0}; // previous state of the keys
 String lastState = "0000";
 int keyCount = 4;             // number of keys
@@ -31,44 +31,51 @@ void setup() {
 void loop() {
   int currentKeyState[] = {0, 0, 0, 0}; // holds the current state of all keys
   String currentState;
-  for (int k = 0; k < keyCount; k++) {   
+  for (int k = 0; k < keyCount; k++) {
     currentKeyState[k] = digitalRead(keys[k]); // read each key
     currentState += currentKeyState[k] + "";
   }      // iterate over the keys
 
-    if (currentState != lastState) {// if a key has changed
+  if (currentState != lastState) {// if a key has changed
 
-      int thisNote = std::stoi(currentState, nullptr, 2);// calculate note
-      int thisCommand = 0;
-
-      if (currentState != "0000" ) {          // if key is pressed
-        thisCommand = 0x90;                     // command is noteOn
-        Serial.print(" on: " + currentKeyState[0] + ":" + currentKeyState[1] + ":" +currentKeyState[2] + ":" +currentKeyState[3]);
-        // 0000
-        // 0001
-        // 0010
-        // 0011
-        // 0100
-        // 0101
-        // 0110
-        // 0111
-        // 1000
-        // 1001
-        // 1010
-        // 1011
-        // 1100
-        // 1101
-        // 1110
-        // 1111
-      } else {                                  // if key is released 
-        thisCommand = 0x80;                     // command is noteOff
-        Serial.print("off: " + currentKeyState[0] + ":" + currentKeyState[1] + ":" +currentKeyState[2] + ":" +currentKeyState[3]);
-      }
-
-      midiCommand(thisCommand, thisNote, 127);  // play or stop the note
-      Serial.println(thisNote, HEX);            // print note
-      lastKeyState[k] = currentKeyState[k];     // save key state for next time
+    int thisNote = 0;// calculate note
+    int value = 0;
+    for (int i = 0; i < 4; i++) // for every character in the string  strlen(s) returns the length of a char array
+    {
+      value *= 2; // double the result so far
+      if (currentState.charAt(i) == '1') value++;  //add 1 if needed
     }
+    thisNote = value;
+    int thisCommand = 0;
+
+    if (currentState != "0000" ) {          // if key is pressed
+      thisCommand = 0x90;                     // command is noteOn
+      Serial.print(" on: " + String(currentKeyState[0]) + ":" + String(currentKeyState[1]) + ":" + String(currentKeyState[2]) + ":" + String(currentKeyState[3]));
+      // 0000
+      // 0001
+      // 0010
+      // 0011
+      // 0100
+      // 0101
+      // 0110
+      // 0111
+      // 1000
+      // 1001
+      // 1010
+      // 1011
+      // 1100
+      // 1101
+      // 1110
+      // 1111
+    } else {                                  // if key is released
+      thisCommand = 0x80;                     // command is noteOff
+      Serial.print("off: " + String(currentKeyState[0]) + ":" + String(currentKeyState[1]) + ":" + String(currentKeyState[2]) + ":" + String(currentKeyState[3]));
+    }
+
+    midiCommand(thisCommand, thisNote, 127);  // play or stop the note
+    Serial.println(thisNote, HEX);            // print note
+    currentState = lastState;     // save key state for next time
+  }
 
 
   // read a 10-bit analog input and convert it to

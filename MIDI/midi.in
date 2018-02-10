@@ -43,7 +43,7 @@ void loop() {
 
       if (currentKeyState[k] == HIGH ) {          // if key is pressed
         thisCommand = 0x90;                     // command is noteOn
-        Serial.print(" on: " + currentKeyState[0] + ":" + currentKeyState[1] + ":" +currentKeyState[2] + ":" +currentKeyState[3]);
+        Serial.print(" on: " + String(currentKeyState[0]) + ":" + String(currentKeyState[1]) + ":" +String(currentKeyState[2]) + ":" + String(currentKeyState[3]));
           //Is pressing just one key
         if(pressedKeys = 1){
           thisNote = k + baseNote;
@@ -114,7 +114,7 @@ void loop() {
 
       } else {                                  // if key is released 
         thisCommand = 0x80;                     // command is noteOff
-        Serial.print("off: " + currentKeyState[0] + ":" + currentKeyState[1] + ":" +currentKeyState[2] + ":" +currentKeyState[3]);
+        Serial.println("off: " + String(currentKeyState[0]) + ":" + String(currentKeyState[1]) + ":" +String(currentKeyState[2]) + ":" +String(currentKeyState[3]));
       }
 
       midiCommand(thisCommand, thisNote, 127);  // play or stop the note
